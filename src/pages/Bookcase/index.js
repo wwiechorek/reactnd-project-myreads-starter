@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import * as BooksAPI from '../../BooksAPI'
 
 import './style.css'
 
@@ -7,6 +8,35 @@ import BooksGrid, { Item } from '../../components/BooksGrid'
 import Book from '../../components/Book'
 
 class Bookcase extends Component {
+    state = {
+        books: []
+    }
+    componentWillMount() {
+        BooksAPI.getAll()
+        .then(resp => {
+            this.setState({
+                books: resp
+            })
+        })
+    }
+
+    renderBooksShelf(shelf) {
+        return (
+            <BooksGrid>            
+                {this.state.books.filter(item => item.shelf === shelf).map(book => (
+                    <Item key={book.id}>
+                        <Book
+                            title={book.title}
+                            author={book.authors[0]}
+                            status={book.shelf}
+                            />
+                    </Item>
+                ))}
+            </BooksGrid>
+        )
+    }
+
+
     render() {
         return (
             <div className="list-books">
@@ -18,22 +48,20 @@ class Bookcase extends Component {
                         <div className="bookshelf">
                             <h2 className="bookshelf-title">Currently Reading</h2>
                             <div className="bookshelf-books">
-                                <BooksGrid>
-                                    <Item>
-                                        <Book
-                                            title="Books title"
-                                            author="Books Author"
-                                            status="wantToRead"
-                                        />
-                                    </Item>
-                                </BooksGrid>
+                                {this.renderBooksShelf('currentlyReading')}
                             </div>
                         </div>
                         <div className="bookshelf">
                             <h2 className="bookshelf-title">Want to Read</h2>
+                            <div className="bookshelf-books">
+                                {this.renderBooksShelf('wantToRead')}
+                            </div>
                         </div>
                         <div className="bookshelf">
                             <h2 className="bookshelf-title">Read</h2>
+                            <div className="bookshelf-books">
+                                {this.renderBooksShelf('read')}
+                            </div>
                         </div>
                     </div>
                 </div>
