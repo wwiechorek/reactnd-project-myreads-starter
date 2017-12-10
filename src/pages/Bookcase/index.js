@@ -22,16 +22,37 @@ class Bookcase extends Component {
         })
     }
 
+    handleBookUpdate(id, shelf) {
+        let books = this.state.books
+        let key = null
+        let bookChanged = books.filter((book, k) => {
+            if(book.id === id) {
+                key = k
+                return true
+            }
+
+            return false
+        })[0]
+        bookChanged.shelf = shelf
+        books[key] = bookChanged
+    
+        this.setState({
+            books
+        })
+    }
+
     renderBooksShelf(shelf) {
         return (
             <BooksGrid>            
                 {this.state.books.filter(item => item.shelf === shelf).map(book => (
                     <Item key={book.id}>
                         <Book
+                            id={book.id}
                             title={book.title}
                             author={book.authors[0]}
                             status={book.shelf}
-                            cover={book.imageLinks.smallThumbnail}                            
+                            cover={book.imageLinks.smallThumbnail}
+                            handleUpdate={(id, data) => this.handleBookUpdate(id, data)}                         
                             />
                     </Item>
                 ))}

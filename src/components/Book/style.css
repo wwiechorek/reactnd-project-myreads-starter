@@ -1,6 +1,11 @@
 .book {
     width: 140px;
 }
+.book.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: wait;
+}
 .book-title,
 .book-authors {
     font-size: 0.8em;
