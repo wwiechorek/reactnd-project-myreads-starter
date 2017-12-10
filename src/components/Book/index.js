@@ -3,6 +3,13 @@ import PropTypes from 'prop-types'
 import './style.css'
 
 class Book extends Component {
+    static propTypes = {
+        title: PropTypes.string.isRequired,
+        cover: PropTypes.string,
+        author: PropTypes.string.isRequired,
+        status: PropTypes.oneOf(['none', 'currentlyReading', 'wantToRead', 'read'])
+    }
+    
     render() {
         return (
             <div className="book">
@@ -23,13 +30,6 @@ class Book extends Component {
             </div>              
         )
     }
-}
-
-Book.propTypes = {
-    title: PropTypes.string.isRequired,
-    cover: PropTypes.string,
-    author: PropTypes.string.isRequired,
-    status: PropTypes.oneOf(['none', 'currentlyReading', 'wantToRead', 'read'])
 }
 
 export default Book
