@@ -91,9 +91,9 @@ class Search extends Component {
                             {this.state.data.map(book => (
                                 <Item key={book.id}>
                                     <Book
+                                        id={book.id}
                                         title={book.title}
                                         author={book.authors ? book.authors[0] : ''}
-                                        status={book.shelf}
                                         cover={book.imageLinks.smallThumbnail}
                                         />
                                 </Item>

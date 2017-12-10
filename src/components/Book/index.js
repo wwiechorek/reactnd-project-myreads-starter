@@ -11,11 +11,12 @@ class Book extends Component {
         title: PropTypes.string.isRequired,
         cover: PropTypes.string.isRequired,
         author: PropTypes.string.isRequired,
-        status: PropTypes.oneOf(['none', 'currentlyReading', 'wantToRead', 'read']).isRequired,
+        status: PropTypes.oneOf(['none', 'currentlyReading', 'wantToRead', 'read']),
         handleUpdate: PropTypes.func
     }
     static defaultProps = {
         handleUpdate: () => {},
+        status: 'none'
     }
 
     state = {
