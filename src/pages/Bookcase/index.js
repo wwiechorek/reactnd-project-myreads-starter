@@ -1,21 +1,23 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import * as BooksAPI from '../../BooksAPI'
 
-import './style.css'
+import * as BooksAPI from '../../BooksAPI'
 
 import BooksGrid, { Item } from '../../components/BooksGrid'
 import Book from '../../components/Book'
 
+import './style.css'
 class Bookcase extends Component {
     state = {
-        books: []
+        books: [],
+        status: 'loading'
     }
     componentWillMount() {
         BooksAPI.getAll()
         .then(resp => {
             this.setState({
-                books: resp
+                books: resp,
+                status: 'done'
             })
         })
     }
@@ -29,6 +31,7 @@ class Bookcase extends Component {
                             title={book.title}
                             author={book.authors[0]}
                             status={book.shelf}
+                            cover={book.imageLinks.smallThumbnail}                            
                             />
                     </Item>
                 ))}
@@ -41,30 +44,36 @@ class Bookcase extends Component {
         return (
             <div className="list-books">
                 <div className="list-books-title">
-                <h1>MyReads</h1>
+                    <h1>MyReads</h1>
                 </div>
-                <div className="list-books-content">
-                    <div>
-                        <div className="bookshelf">
-                            <h2 className="bookshelf-title">Currently Reading</h2>
-                            <div className="bookshelf-books">
-                                {this.renderBooksShelf('currentlyReading')}
+                {this.state.status === 'loading' ? 
+                    <div style={{textAlign: 'center'}}>
+                        Loading...
+                    </div>
+                : (
+                    <div className="list-books-content">
+                        <div>
+                            <div className="bookshelf">
+                                <h2 className="bookshelf-title">Currently Reading</h2>
+                                <div className="bookshelf-books">
+                                    {this.renderBooksShelf('currentlyReading')}
+                                </div>
                             </div>
-                        </div>
-                        <div className="bookshelf">
-                            <h2 className="bookshelf-title">Want to Read</h2>
-                            <div className="bookshelf-books">
-                                {this.renderBooksShelf('wantToRead')}
+                            <div className="bookshelf">
+                                <h2 className="bookshelf-title">Want to Read</h2>
+                                <div className="bookshelf-books">
+                                    {this.renderBooksShelf('wantToRead')}
+                                </div>
                             </div>
-                        </div>
-                        <div className="bookshelf">
-                            <h2 className="bookshelf-title">Read</h2>
-                            <div className="bookshelf-books">
-                                {this.renderBooksShelf('read')}
+                            <div className="bookshelf">
+                                <h2 className="bookshelf-title">Read</h2>
+                                <div className="bookshelf-books">
+                                    {this.renderBooksShelf('read')}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )}                
                 <div className="open-search">
                     <Link to="/search">Add a book</Link>
                 </div>
