@@ -1,24 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './style.css'
 
-class BooksGrid extends Component {
-    render() {
-        return (
-            <ol className="books-grid">
-                { this.props.children }
-            </ol>
-        )
-    }
-}
+export default props => (
+    <ol className="books-grid">
+        { props.children }
+    </ol>
+)
 
-export default BooksGrid
-
-export class Item extends Component {
-    render() {
-        return (
-            <li>
-                { this.props.children }
-            </li>
-        )
-    }
-}
+export const Item = props => (
+    <li>
+        { props.children }
+    </li>
+)
