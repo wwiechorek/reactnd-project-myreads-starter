@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom'
 
 import * as BooksAPI from '../../BooksAPI'
 
-import BooksGrid, { Item } from '../../components/BooksGrid'
-import Book from '../../components/Book'
+import BookShelf from '../../components/BookShelf'
 
 import './style.css'
 class Bookcase extends Component {
@@ -12,6 +11,7 @@ class Bookcase extends Component {
         books: [],
         status: 'loading'
     }
+
     componentWillMount() {
         BooksAPI.getAll()
         .then(resp => {
@@ -41,27 +41,27 @@ class Bookcase extends Component {
         })
     }
 
-    renderBooksShelf(shelf) {
-        return (
-            <BooksGrid>            
-                {this.state.books.filter(item => item.shelf === shelf).map(book => (
-                    <Item key={book.id}>
-                        <Book
-                            id={book.id}
-                            title={book.title}
-                            author={book.authors[0]}
-                            status={book.shelf}
-                            cover={(book.imageLinks) ? book.imageLinks.smallThumbnail : undefined}
-                            handleUpdate={(id, data) => this.handleBookUpdate(id, data)}                         
-                            />
-                    </Item>
-                ))}
-            </BooksGrid>
-        )
-    }
-
 
     render() {
+
+        const shelves = [
+            {
+                id: 'currentlyReading',
+                title: 'Currently Reading',
+                books: this.state.books.filter(book => book.shelf === 'currentlyReading')
+            },
+            {
+                id: 'wantToRead',
+                title: 'Want To Read',
+                books: this.state.books.filter(book => book.shelf === 'wantToRead')
+            },
+            {
+                id: 'read',
+                title: 'Read',
+                books: this.state.books.filter(book => book.shelf === 'read')
+            },
+        ]
+
         return (
             <div className="list-books">
                 <div className="list-books-title">
@@ -74,24 +74,14 @@ class Bookcase extends Component {
                 : (
                     <div className="list-books-content">
                         <div>
-                            <div className="bookshelf">
-                                <h2 className="bookshelf-title">Currently Reading</h2>
-                                <div className="bookshelf-books">
-                                    {this.renderBooksShelf('currentlyReading')}
-                                </div>
-                            </div>
-                            <div className="bookshelf">
-                                <h2 className="bookshelf-title">Want to Read</h2>
-                                <div className="bookshelf-books">
-                                    {this.renderBooksShelf('wantToRead')}
-                                </div>
-                            </div>
-                            <div className="bookshelf">
-                                <h2 className="bookshelf-title">Read</h2>
-                                <div className="bookshelf-books">
-                                    {this.renderBooksShelf('read')}
-                                </div>
-                            </div>
+                            {shelves.map(shelf => (
+                                <BookShelf
+                                    key={shelf.id}
+                                    title={shelf.title}
+                                    books={shelf.books}
+                                    handleBookUpdate={(id, value) => this.handleBookUpdate(id, value)}
+                                     />
+                            ))}
                         </div>
                     </div>
                 )}                
