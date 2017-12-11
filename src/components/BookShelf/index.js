@@ -31,7 +31,7 @@ class BookShelf extends Component {
                                     title={book.title}
                                     author={book.authors[0]}
                                     status={book.shelf}
-                                    cover={(book.imageLinks) ? book.imageLinks.smallThumbnail : undefined}
+                                    cover={undefined}
                                     handleUpdate={(id, data) => this.props.handleBookUpdate(id, data)}                         
                                     />
                             </Item>
