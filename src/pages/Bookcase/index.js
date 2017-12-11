@@ -51,7 +51,7 @@ class Bookcase extends Component {
                             title={book.title}
                             author={book.authors[0]}
                             status={book.shelf}
-                            cover={book.imageLinks.smallThumbnail}
+                            cover={(book.imageLinks) ? book.imageLinks.smallThumbnail : undefined}
                             handleUpdate={(id, data) => this.handleBookUpdate(id, data)}                         
                             />
                     </Item>

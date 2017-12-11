@@ -9,14 +9,15 @@ class Book extends Component {
     static propTypes = {
         id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
-        cover: PropTypes.string.isRequired,
+        cover: PropTypes.string,
         author: PropTypes.string.isRequired,
         status: PropTypes.oneOf(['none', 'currentlyReading', 'wantToRead', 'read']),
         handleUpdate: PropTypes.func
     }
     static defaultProps = {
         handleUpdate: () => {},
-        status: 'none'
+        status: 'none',
+        cover: require('./no-image.svg')
     }
 
     state = {
@@ -40,7 +41,7 @@ class Book extends Component {
         return (
             <div className={`book ${this.state.status === 'loading' ? 'loading' : ''}`}>
                 <div className="book-top">
-                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${this.props.cover})` }}></div>
+                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${this.props.cover}")` }}></div>
                     <div className="book-shelf-changer">
                     <select defaultValue={this.props.status} onChange={(e) => this.update(this.props.id, e.target.value)}>
                         <option disabled>Move to...</option>
